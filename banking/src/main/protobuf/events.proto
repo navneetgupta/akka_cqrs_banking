@@ -1,0 +1,33 @@
+syntax="proto3";
+
+package com.navneetgupta.banking.proto;
+
+option optimize_for = SPEED;
+
+
+message Account{
+  string id = 1;
+  string balance = 2;
+  int64 createTs = 3;
+  int64 modifyTs = 4;
+  bool closed = 5;
+} 
+ 
+message AccountOpened{
+  Account account = 1;
+}
+
+message AccountCredited{
+  string balance = 1;
+  int64 occured_on = 2;
+}
+
+message AccountDebited{
+  string balance = 1;
+  int64 occured_on = 2;
+}
+
+message AccountClosed{
+  string id = 1;
+  int64 modifyTs = 2;
+}
