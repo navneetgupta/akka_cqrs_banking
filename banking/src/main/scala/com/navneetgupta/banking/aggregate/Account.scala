@@ -33,7 +33,7 @@ class Account extends BasePersistentEntity[AccountFO] {
     case OpenAccount(account) =>
       persist(AccountOpened(account)) { handleEventAndRespond() }
     case DebitAccount(id: String, amount: BigDecimal) =>
-      if (state.balance >= amount) {
+      if (state.balance < amount) {
         log.warning("Insufficient Balance to Withdraw from account id: {} with balance : {} asked to withdraw {}", state.id, state.balance, amount)
         sender() ! stateResponse()
       } else {
@@ -49,13 +49,13 @@ class Account extends BasePersistentEntity[AccountFO] {
     case AccountOpened(account) =>
       state = account
     case AccountDebited(amount, occuredOn) =>
-      state.copy(balance = state.balance - amount, modifyTs = new Date())
+      state = state.copy(balance = state.balance - amount, modifyTs = new Date())
     case AccountCredited(amount, occuredOn) =>
-      state.copy(
+      state = state.copy(
         balance = state.balance + amount,
         modifyTs = new Date())
     case AccountClosed(id, closedOn) =>
-      state.markDeleted
+      state = state.markDeleted
   }
 
   def isCreateMessage(cmd: Any): Boolean = cmd match {
