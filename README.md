@@ -6,7 +6,7 @@
 
 ```cd shared && sbt publishLocal```
 
-```cd ../user_management_basic_crud_cqrs```
+```cd ../banking```
 
  Run below command from above Folder in two diffrent terminal tabs
 
